@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:/data/db
+      # environment:
+      # MONGO_INITDB_ROOT_USERNAME:root or xyz
+      # MONGO_INITDB_ROOT_PASSWORD:secret or xyz
+      # - MONGO_INITDB_ROOT_USERNAME = root or axy
+      # env_file:
+      - ./env/mongo.env
+    # networks:
+    #   - goal-network
+
+  backend:
+    build: ./backend-network
+      # build: 
+      # context: ./backend-network (relative path of backend where docker is )
+      # dockerfile: Dockerfile (docker file anything like Dockerfile-dev)
+      # args:
+      #   args-name
+      # image: "image_name"
+    ports:
+      - "3000:3000"
+    volumes:
+      # - logs:/app/logs
+      - ./backend-network:/app
+      - /app/node_modules
+      # env_file:
+      # - ./env/backend.env
+    depends_on:
+      - mongodb
+  frontend:
+volumes:
+  data:
+  logs:
